@@ -1,0 +1,64 @@
+# Node Modules
+**/node_modules/
+**/.pnp
+**/.pnp.*
+**/.yarn/*
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/releases
+!**/.yarn/versions
+
+# Mac OS files
+**/.DS_Store
+
+# Environments
+**/.env
+**/.env.test
+**/.env.production
+**/.env.local
+**/.env.*
+**/.venv
+**/env/
+**/venv/
+
+# Environment Variables
+.env
+.env.*
+
+# Prisma
+**/prisma/data.db
+
+# Frontend (Next.js)
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/coverage/
+
+# Backend (Node)
+backend/dist/
+backend/build/
+
+# Judge Service (Python)
+judge-service/__pycache__/
+judge-service/*.py[cod]
+judge-service/*$py.class
+judge-service/.pytest_cache/
+judge-service/htmlcov/
+judge-service/.coverage
+
+# Logs
+**/logs
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# Typescript
+**/*.tsbuildinfo
+frontend/next-env.d.ts
+
+# Misc Debugging
+**/.vercel
+**/.vscode/
+**/.idea/
+**/.pnpm-debug.log*
