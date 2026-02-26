@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const adventureController_1 = require("../controllers/adventureController");
+const auth_1 = require("../middlewares/auth");
+const router = (0, express_1.Router)();
+router.get('/regions', auth_1.authenticateJWT, adventureController_1.getRegions);
+router.get('/regions/:regionId/levels', auth_1.authenticateJWT, adventureController_1.getLevelsInRegion);
+router.get('/levels/:levelId', auth_1.authenticateJWT, adventureController_1.getLevelDetails);
+exports.default = router;

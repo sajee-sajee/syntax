@@ -1,0 +1,55 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: codeuser
+      POSTGRES_PASSWORD: codepass
+      POSTGRES_DB: codereality
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+
+  backend:
+    build: ./backend
+    ports:
+      - '4000:4000'
+    environment:
+      DATABASE_URL: postgresql://codeuser:codepass@postgres:5432/codereality
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: supersecretjwtkey
+      JUDGE_SERVICE_URL: http://judge-service:8001
+      NODE_ENV: development
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  judge-service:
+    build: ./judge-service
+    ports:
+      - '8001:8001'
+    environment:
+      PYTHONUNBUFFERED: '1'
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+      NEXT_PUBLIC_WS_URL: http://localhost:4000
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
