@@ -34,8 +34,9 @@ export default function Home() {
           router.push("/character-creation");
         }
       }
-    } catch (err: any) {
-      setError(err.response?.data?.error || "An error occurred");
+    } catch (err) {
+      const error = err as { response?: { data?: { error?: string } } };
+      setError(error.response?.data?.error || "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -126,8 +127,8 @@ export default function Home() {
               type="submit"
               disabled={loading}
               className={`w-full py-4 rounded-lg font-bold tracking-wide flex items-center justify-center gap-2 transition-all group ${isLogin
-                  ? 'bg-brand-600 hover:bg-brand-500 text-white'
-                  : 'bg-cyber-purple hover:bg-purple-500 text-white'
+                ? 'bg-brand-600 hover:bg-brand-500 text-white'
+                : 'bg-cyber-purple hover:bg-purple-500 text-white'
                 }`}
             >
               {loading ? (

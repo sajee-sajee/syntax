@@ -43,8 +43,9 @@ export default function CharacterCreation() {
                 setAuth({ ...user, characterCreated: true }, token);
                 router.push("/dashboard");
             }
-        } catch (err: any) {
-            setError(err.response?.data?.error || "Failed to create character");
+        } catch (err) {
+            const error = err as { response?: { data?: { error?: string } } };
+            setError(error.response?.data?.error || "Failed to create character");
         } finally {
             setLoading(false);
         }
@@ -54,9 +55,9 @@ export default function CharacterCreation() {
         <div className="min-h-screen bg-[#09090b] text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
             {/* Dynamic Background based on Aura */}
             <div className={`absolute top-0 right-0 w-[800px] h-[800px] rounded-full blur-[150px] pointer-events-none transition-colors duration-1000 ${aura === 'aura-blue' ? 'bg-blue-500/10' :
-                    aura === 'aura-purple' ? 'bg-purple-500/10' :
-                        aura === 'aura-pink' ? 'bg-pink-500/10' :
-                            'bg-green-500/10'
+                aura === 'aura-purple' ? 'bg-purple-500/10' :
+                    aura === 'aura-pink' ? 'bg-pink-500/10' :
+                        'bg-green-500/10'
                 }`} />
 
             <motion.div
@@ -107,8 +108,8 @@ export default function CharacterCreation() {
                                     type="button"
                                     onClick={() => setAura(c.id)}
                                     className={`relative h-24 rounded-xl border-2 transition-all overflow-hidden flex flex-col items-center justify-center gap-2 ${aura === c.id
-                                            ? 'border-white scale-105'
-                                            : 'border-white/10 hover:border-white/30 hover:bg-white/5'
+                                        ? 'border-white scale-105'
+                                        : 'border-white/10 hover:border-white/30 hover:bg-white/5'
                                         }`}
                                 >
                                     <div className={`w-6 h-6 rounded-full shadow-lg ${c.class}`} />

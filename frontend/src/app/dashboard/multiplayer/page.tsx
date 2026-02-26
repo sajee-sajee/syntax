@@ -4,19 +4,35 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { io, Socket } from "socket.io-client";
 import { Users, Swords, Crown, Play, Sparkles } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Editor from "@monaco-editor/react";
 
 let socket: Socket;
 
+interface GameState {
+    id: string;
+    status: string;
+    hostId: string;
+    participants: Participant[];
+}
+interface Participant {
+    userId: string;
+    characterName: string;
+    score: number;
+    testsPassed: number;
+}
+interface Problem {
+    title: string;
+    starterCode?: Record<string, string>;
+    testCases?: unknown[];
+}
+
 export default function MultiplayerRoom() {
     const user = useAuthStore((state) => state.user);
-    const router = useRouter();
     const [roomCode, setRoomCode] = useState("");
     const [inRoom, setInRoom] = useState(false);
-    const [gameState, setGameState] = useState<any>(null);
-    const [problem, setProblem] = useState<any>(null);
+    const [gameState, setGameState] = useState<GameState | null>(null);
+    const [problem, setProblem] = useState<Problem | null>(null);
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
 
@@ -35,7 +51,7 @@ export default function MultiplayerRoom() {
         });
 
         socket.on("leaderboard_updated", (leaders) => {
-            setGameState((prev: any) => ({ ...prev, participants: leaders }));
+            setGameState((prev) => prev ? { ...prev, participants: leaders } : null);
         });
 
         socket.on("error", (err) => {
@@ -78,7 +94,7 @@ export default function MultiplayerRoom() {
         const newScore = newTestsPassed * 10;
 
         socket.emit("submit_progress", {
-            roomCode: gameState.id,
+            roomCode: gameState?.id,
             userId: user?.id,
             testsPassed: newTestsPassed,
             score: newScore
@@ -182,7 +198,7 @@ export default function MultiplayerRoom() {
 
                 <div className="space-y-4">
                     <AnimatePresence>
-                        {gameState?.participants.map((p: any, idx: number) => (
+                        {gameState?.participants.map((p: Participant, idx: number) => (
                             <motion.div
                                 key={p.userId}
                                 layout

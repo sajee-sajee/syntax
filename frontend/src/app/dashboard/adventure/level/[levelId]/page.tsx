@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Play, Send, Terminal as TerminalIcon, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, Play, Send, Terminal as TerminalIcon, CheckCircle2 } from "lucide-react";
 import Editor from "@monaco-editor/react";
 import ReactMarkdown from "react-markdown";
 
 export default function LevelEditor() {
     const { levelId } = useParams();
     const router = useRouter();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [level, setLevel] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [code, setCode] = useState("");
@@ -69,8 +70,9 @@ export default function LevelEditor() {
                 }
                 setOutput(out);
             }
-        } catch (err: any) {
-            setOutput(`ERROR: ${err.response?.data?.error || err.message}\nConnection to Kernel lost.`);
+        } catch (err) {
+            const error = err as { response?: { data?: { error?: string } }, message?: string };
+            setOutput(`ERROR: ${error.response?.data?.error || error.message}\nConnection to Kernel lost.`);
         } finally {
             setIsSubmitting(false);
         }
@@ -106,7 +108,7 @@ export default function LevelEditor() {
 
                     <div className="prose prose-invert prose-brand max-w-none mb-8">
                         <div className="p-4 bg-brand-500/10 border border-brand-500/20 rounded-xl mb-6 text-brand-100 italic">
-                            "{level?.storyIntro}"
+                            &quot;{level?.storyIntro}&quot;
                         </div>
                         <ReactMarkdown>{level?.learningMd}</ReactMarkdown>
                     </div>
@@ -124,7 +126,7 @@ export default function LevelEditor() {
                             {level.problem.testCases?.length > 0 && (
                                 <div className="space-y-4">
                                     <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest">Example Cases</h3>
-                                    {level.problem.testCases.map((tc: any, idx: number) => (
+                                    {level.problem.testCases.map((tc: { id: string, input: string, expectedOutput: string }) => (
                                         <div key={tc.id} className="bg-white/5 border border-white/10 rounded-lg p-4 font-mono text-sm">
                                             <div className="text-gray-400 mb-1">Input: <span className="text-white">{tc.input}</span></div>
                                             <div className="text-gray-400">Expected Output: <span className="text-brand-400">{tc.expectedOutput}</span></div>

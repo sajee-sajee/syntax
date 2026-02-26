@@ -4,11 +4,18 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { useAuthStore } from "@/store/useAuthStore";
 import { motion } from "framer-motion";
-import { Map, Swords, Target, Flame, Trophy, Activity, Crown } from "lucide-react";
+import { Map, Swords, Target, Flame, Trophy, Activity } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+interface DashboardData {
+    streak?: { currentStreak: number };
+    totalSolved?: number;
+    ranking?: { tier: string; totalScore: number };
+    currentRegion?: { name: string };
+}
+
 export default function Dashboard() {
-    const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<DashboardData | null>(null);
     const [loading, setLoading] = useState(true);
     const user = useAuthStore((state) => state.user);
     const router = useRouter();
