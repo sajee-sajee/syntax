@@ -33,10 +33,12 @@ frontend/.next/
 frontend/out/
 frontend/build/
 frontend/coverage/
+frontend/node_modules/
 
 # Backend (Node)
 backend/dist/
 backend/build/
+backend/node_modules/
 
 # Judge Service (Python)
 judge-service/__pycache__/
