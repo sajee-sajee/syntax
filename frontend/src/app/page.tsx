@@ -142,7 +142,7 @@ export default function Home() {
           </form>
 
           <div className="mt-8 pt-6 border-t border-white/10 text-center">
-            <p className="text-xs text-gray-500 uppercase tracking-wider">Secure Kernel Connection Established</p>
+            <p className="text-xs text-gray-500 uppercase tracking-wider">START YOUR CODING JOURNEY</p>
           </div>
         </div>
       </motion.div>
