@@ -6,10 +6,21 @@ import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, BookOpen, Code2, Lock } from "lucide-react";
 import { motion } from "framer-motion";
 
+interface Level {
+    id: string;
+    order: number;
+    isBoss: boolean;
+    title: string;
+    problem?: {
+        title: string;
+        difficulty: 'easy' | 'medium' | 'hard';
+    };
+}
+
 export default function RegionLevels() {
     const { regionId } = useParams();
     const router = useRouter();
-    const [levels, setLevels] = useState<any[]>([]);
+    const [levels, setLevels] = useState<Level[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -62,8 +73,8 @@ export default function RegionLevels() {
                             transition={{ delay: idx * 0.1 }}
                             onClick={() => isUnlocked && router.push(`/dashboard/adventure/level/${level.id}`)}
                             className={`p-6 rounded-2xl border transition-all relative overflow-hidden h-full flex flex-col ${isUnlocked
-                                    ? "bg-black/60 border-brand-500/50 hover:border-brand-500 cursor-pointer box-glow group"
-                                    : "bg-black/20 border-white/5 opacity-60 cursor-not-allowed"
+                                ? "bg-black/60 border-brand-500/50 hover:border-brand-500 cursor-pointer box-glow group"
+                                : "bg-black/20 border-white/5 opacity-60 cursor-not-allowed"
                                 }`}
                         >
                             {isUnlocked && (
@@ -86,8 +97,8 @@ export default function RegionLevels() {
                                             Algorithm: {level.problem.title}
                                         </span>
                                         <span className={`text-xs px-2 py-1 rounded-full font-bold ${level.problem.difficulty === 'easy' ? 'text-green-400 bg-green-400/10 border border-green-400/20' :
-                                                level.problem.difficulty === 'medium' ? 'text-yellow-400 bg-yellow-400/10 border border-yellow-400/20' :
-                                                    'text-red-400 bg-red-400/10 border border-red-400/20'
+                                            level.problem.difficulty === 'medium' ? 'text-yellow-400 bg-yellow-400/10 border border-yellow-400/20' :
+                                                'text-red-400 bg-red-400/10 border border-red-400/20'
                                             }`}>
                                             {level.problem.difficulty.toUpperCase()}
                                         </span>
